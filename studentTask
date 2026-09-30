@@ -1,0 +1,59 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <numeric>
+#include <iomanip>
+
+class Student {
+private:
+    std::string name;
+    std::string group;      
+    int age;                
+    std::vector<int> grades;
+
+public:
+    
+    Student(const std::string& name, const std::string& group, int age)
+        : name(name), group(group), age(age) {}
+
+    
+    void addGrade(int grade) {
+        if (grade < 1 || grade > 5) {
+            std::cout << "Оценка должна быть от 1 до 5!\n";
+            return;
+        }
+        grades.push_back(grade);
+    }
+
+    
+    void printInfo() const {
+        std::cout << "===== Информация о студенте =====\n";
+        std::cout << "Имя:     " << name << "\n";
+        std::cout << "Группа:  " << group << "\n";
+        std::cout << "Возраст: " << age << "\n";
+        std::cout << "Оценки:  ";
+        if (grades.empty()) {
+            std::cout << "(нет оценок)\n";
+        } else {
+            for (int g : grades) {
+                std::cout << g << " ";
+            }
+            double avg = std::accumulate(grades.begin(), grades.end(), 0.0) / grades.size();
+            std::cout << "\nСредний балл: " << std::fixed << std::setprecision(2) << avg << "\n";
+        }
+        std::cout << "=================================\n";
+    }
+};
+
+int main() {
+    Student s("Иван Иванов", "ПИ-21-1", 19);
+
+    s.addGrade(5);
+    s.addGrade(4);
+    s.addGrade(3);
+    s.addGrade(5);
+
+    s.printInfo();
+
+    return 0;
+}
