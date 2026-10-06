@@ -1,0 +1,48 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+class Box; 
+
+struct Ball {
+    std::string color;
+    Box* box = nullptr;      
+
+    Ball(const std::string& c) : color(c) {}
+};
+
+struct Box {
+    std::string name;
+    std::vector<Ball*> balls; 
+
+    Box(const std::string& n) : name(n) {}
+
+    void put(Ball& b) {
+        balls.push_back(&b);
+        b.box = this;
+    }
+};
+
+int main() {
+    
+    Ball red("красный"), green("зелёный"), blue("синий");
+
+    Box boxA("A"), boxB("B");
+
+    boxA.put(red);
+    boxA.put(green);
+    boxB.put(blue);
+
+    std::cout << "В коробке A: ";
+    for (Ball* b : boxA.balls) std::cout << b->color << " ";
+    std::cout << "\n";
+
+    std::cout << "В коробке B: ";
+    for (Ball* b : boxB.balls) std::cout << b->color << " ";
+    std::cout << "\n";
+
+    std::cout << "Красный: "
+              << (red.box ? "в коробке " + red.box->name : "нигде") << "\n";
+    std::cout << "Синий: "
+              << (blue.box ? "в коробке " + blue.box->name : "нигде") << "\n";
+}
